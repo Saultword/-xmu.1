@@ -1,0 +1,37 @@
+#include <qrencode.h>
+#include<opencv2\core\core.hpp>
+#include<opencv2\highgui\highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp> 
+#include <iostream>
+int main()
+{
+
+	std::string src = "啥子哦";
+
+	// 使用qrencode进行字符串编码
+	QRcode* code = QRcode_encodeString(src.c_str(), 0, QR_ECLEVEL_H, QR_MODE_8, 1);
+	if (code == NULL) {
+		std::cout << "code = NULL" << std::endl;
+		return -1;
+	}
+
+	cv::Mat img = cv::Mat(code->width, code->width, CV_8U);
+
+	for (int i = 0; i < code->width; ++i) {
+		for (int j = 0; j < code->width; ++j)
+		{
+			img.at<uchar>(i, j) = (code->data[i * code->width + j] & 0x01) == 0x01 ? 0 : 255;
+		}
+	}
+	cv::resize(img, img, cv::Size(img.rows * 10, img.cols * 10), 0, 0, cv::INTER_NEAREST);
+
+	//cv::imshow("code", img);
+	cv::imwrite("code.jpg", img);
+
+	//img.convertTo(img, CV_32F, 1.0 / 255, 0);
+	//cv::imshow("code", img);
+	//cv::waitKey(100);
+
+	//system("pause");
+	return 0;
+}
