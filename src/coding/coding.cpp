@@ -2,7 +2,7 @@
 using namespace std;
 using namespace cv;
 
-namespace coding {
+namespace encoding {
 
     //单张图片存储二进制位最大值
     const int MAX_SIZE = 100 * 100 - 8;
@@ -56,15 +56,9 @@ namespace coding {
         }
         return rt;
     }
-}
 
-namespace string2Image {
-
-    //单张图片存储二进制位最大值
-    const int MAX_SIZE = 100 * 100 - 8;
-    
     //将string内存的二进制信息存入Mat
-    Mat string2Mat(string s,int num) {
+    Mat string2Mat(string s, int num) {
         Mat img(100, 100, CV_8UC1);
 
         //存入张数信息
@@ -83,7 +77,7 @@ namespace string2Image {
         }
 
         //放大图片
-        Mat bigger_img(800, 800,CV_8UC1);
+        Mat bigger_img(800, 800, CV_8UC1);
 
         for (int i = 0; i < 800; i++) {
             for (int j = 0; j < 800; j++) {
@@ -126,5 +120,4 @@ namespace string2Image {
         }
         return rt;
     }
-
 }
