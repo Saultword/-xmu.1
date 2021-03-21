@@ -94,8 +94,11 @@ namespace encoding {
         for (int i = 0; i < 1000; i++) {
             for (int j = 0; j < 1000; j++) {
                 rt.ptr<uchar>(i)[j] = 255;
-                if (i <= 905 && i >= 95 && j <= 905 && j >= 95) {
+                if (i <= 910 && i >= 90 && j <= 910 && j >= 90) {
                     rt.ptr<uchar>(i)[j] = 0;
+                }
+                if (i <= 905 && i >= 95 && j <= 905 && j >= 95) {
+                    rt.ptr<uchar>(i)[j] = 255;
                 }
             }
         }
