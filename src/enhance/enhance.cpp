@@ -7,7 +7,7 @@ namespace enhance {
 	//增强图像
 	Mat enhancement(Mat src) {
 		for (int i = 0; i < src.rows; i++) {
-			for (int j = 0; i < src.cols; j++) {
+			for (int j = 0; j < src.cols; j++) {
 				src.ptr<uchar>(i)[j] = (src.ptr<uchar>(i)[j] > 128 ? 255 : 0);
 			}
 		}
