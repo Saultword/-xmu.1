@@ -14,7 +14,7 @@ namespace module3
     int ratio1 = 3;                             //高低阈值之比
     int kernel_size = 3;                        //内核大小
     int highThreshold = lowThreshold * ratio1;
-
+    int idx = 0;
     // 命名空间成员函数 -- 定义
 
     //增强图像 //进行二值化操作
@@ -101,7 +101,7 @@ namespace module3
         //绘制轮廓
         drawContours(res_dst, contours, maxAreaIdx, color, 2, 8, hierarchy, 0, Point(0, 0));
 
-        imshow("res", res_dst);
+        //imshow("res", res_dst);
 
 
         //用于存储拟合多边形的顶点信息
@@ -110,7 +110,7 @@ namespace module3
         approxPolyDP(contours[maxAreaIdx], vertex_point, 50, 1);
 
         //输出拟合成的多边形的顶点信息
-        cout << vertex_point << endl;
+        //cout << vertex_point << endl;
 
         return vertex_point;
     }
@@ -187,7 +187,9 @@ namespace module3
             //resize(src_im, src_im, Size(815, 815), 0, 0, INTER_CUBIC);
             cvtColor(src_im, src_im, CV_BGR2GRAY);
             src_im = enhancement(src_im);
-            cout << endl << src_im.rows << " " << src_im.cols;
+
+            idx++;
+            cout << idx << ": " << endl << src_im.rows << " " << src_im.cols <<endl;
             //将截取到的二维码添加到容器src中
             src.push_back(src_im);
         }
