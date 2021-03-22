@@ -41,7 +41,7 @@ int main()
 	
 	dst_images = get_QRcode(src_images);
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < dst_images.size(); i++)
 	{
 		dst_images[i] = enhancement(dst_images[i]);
 		char str[10];
