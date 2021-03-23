@@ -158,9 +158,6 @@ namespace module3
             if (!src_im.data)
                 exit(-1);
 
-            //对图片大小进行调整
-            //resize(src_im, src_im, Size(815, 815), 0, 0, INTER_LANCZOS4);
-
             //创建与src_im同类型的大小的矩阵（dst）
             dst.create(src_im.size(), src_im.type());
 
