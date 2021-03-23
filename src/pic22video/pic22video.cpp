@@ -9,16 +9,16 @@ using namespace picvideo;
 	void pic2video(vector<Mat>& src_ims)
 	{
 		char name2[20];
-		cout << "ÇëÊäÈë±àÂëºóµÄÊÓÆµÎÄ¼şÃû£¬ÀıÈç¡°test.mp4¡±:" << endl;
+		cout << "è¯·è¾“å…¥ç¼–ç åçš„è§†é¢‘æ–‡ä»¶åï¼Œä¾‹å¦‚â€œtest.mp4â€:" << endl;
 		cin >> name2;
 		
-		cout << "ÇëÊäÈëÊÓÆµÖ¡ÂÊ:" << endl;
+		cout << "è¯·è¾“å…¥è§†é¢‘å¸§ç‡:" << endl;
 		cin >> frame_rate;
-		VideoWriter video(name2, CAP_ANY, frame_rate, Size(720, 720));
+		VideoWriter video(name2, CAP_ANY, frame_rate, Size(1000, 1000));
 		for (size_t i = 0; i < src_ims.size(); i++)
 		{
 			Mat image = src_ims[i].clone();
-			// Á÷²Ù×÷·û£¬°ÑÍ¼Æ¬´«ÈëÊÓÆµ
+			// æµæ“ä½œç¬¦ï¼ŒæŠŠå›¾ç‰‡ä¼ å…¥è§†é¢‘
 			video << image;
 		}
 	}
@@ -27,7 +27,7 @@ using namespace picvideo;
 		VideoCapture capture(path);
 		Mat frame;
 		while (true) {
-			//Ò»Ö¡Ò»Ö¡¶Á
+			//ä¸€å¸§ä¸€å¸§è¯»
 			capture >> frame;
 			if (frame.empty()) {
 				break;
@@ -41,18 +41,18 @@ using namespace picvideo;
 		VideoCapture capture(path);
 		while (1)
 		{
-			//frame´æ´¢Ã¿Ò»Ö¡Í¼Ïñ
+			//frameå­˜å‚¨æ¯ä¸€å¸§å›¾åƒ
 			Mat frame;
-			//¶ÁÈ¡µ±Ç°Ö¡
+			//è¯»å–å½“å‰å¸§
 			capture >> frame;
-			//²¥·ÅÍêÍË³ö
+			//æ’­æ”¾å®Œé€€å‡º
 			if (frame.empty()) {
-				printf("²¥·ÅÍê³É\n");
+				printf("æ’­æ”¾å®Œæˆ\n");
 				break;
 			}
-			//ÏÔÊ¾µ±Ç°ÊÓÆµ
-			imshow("¶ÁÈ¡ÊÓÆµ", frame);
-			//ÑÓÊ±300ms
+			//æ˜¾ç¤ºå½“å‰è§†é¢‘
+			imshow("è¯»å–è§†é¢‘", frame);
+			//å»¶æ—¶300ms
 			waitKey(300);
 		}
 
