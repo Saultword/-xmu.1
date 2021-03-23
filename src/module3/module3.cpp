@@ -43,28 +43,6 @@ namespace module3
         src.copyTo(dst, detected_edges);
         return dst;
     }
-
-    //对图片进行膨化和腐蚀处理，去除不需要的边缘和闭合间隙
-    void dilate_erode(Mat& src, Mat& dst)
-    {
-        //返回指定形状和尺寸的内核矩阵。选择矩形的 3*3 内核，锚点默认为中心点(-1,-1)
-        Mat element = getStructuringElement(MORPH_RECT, Size(3, 3), Point(-1, -1));
-
-        //膨化处理
-        dilate(src, dst, element);
-
-        //腐蚀处理
-        erode(dst, dst, element);
-
-        for (int i = 0; i < 10; i++)
-        {
-            //膨化处理
-            dilate(dst, dst, element);
-
-            //腐蚀处理
-            erode(dst, dst, element);
-        }
-    }
     
 
     //确定目标图片中的目标二维码所在区域
@@ -167,9 +145,6 @@ namespace module3
 
             //转换为灰度图
             cvtColor(dst, dst, CV_BGR2GRAY);
-
-            //膨化与腐蚀
-            dilate_erode(dst, dst);
 
             //得到二维码区域顶点
             vector<Point>point = getRect(dst, dst);
