@@ -6,18 +6,18 @@ using namespace std;
 
 namespace module3
 {
-    // ÃüÃû¿Õ¼ä³ÉÔ±±äÁ¿
+    // å‘½åç©ºé—´æˆå‘˜å˜é‡
 
-    Mat src_gray;                               //Ô´Í¼Æ¬£¬Ô´»Ò¶ÈÍ¼Æ¬ 
-    Mat dst, detected_edges;                    //Ä¿±êÍ¼Æ¬£¬ÒÑ¼ì²â±ßÔµÍ¼Æ¬
-    int lowThreshold = 80;                      //µÍãĞÖµ   ÉèÖÃÎª0ÊÇµÄ¾ùÎªÇ¿±ßÔµµã£¬´Ó¶ø»ñµÃ¸üÍêÕûµÄ±ßÔµÍ¼Æ¬
-    int ratio1 = 3;                             //¸ßµÍãĞÖµÖ®±È
-    int kernel_size = 3;                        //ÄÚºË´óĞ¡
+    Mat src_gray;                               //æºå›¾ç‰‡ï¼Œæºç°åº¦å›¾ç‰‡ 
+    Mat dst, detected_edges;                    //ç›®æ ‡å›¾ç‰‡ï¼Œå·²æ£€æµ‹è¾¹ç¼˜å›¾ç‰‡
+    int lowThreshold = 80;                      //ä½é˜ˆå€¼   è®¾ç½®ä¸º0æ˜¯çš„å‡ä¸ºå¼ºè¾¹ç¼˜ç‚¹ï¼Œä»è€Œè·å¾—æ›´å®Œæ•´çš„è¾¹ç¼˜å›¾ç‰‡
+    int ratio1 = 3;                             //é«˜ä½é˜ˆå€¼ä¹‹æ¯”
+    int kernel_size = 3;                        //å†…æ ¸å¤§å°
     int highThreshold = lowThreshold * ratio1;
     int idx = 0;
-    // ÃüÃû¿Õ¼ä³ÉÔ±º¯Êı -- ¶¨Òå
+    // å‘½åç©ºé—´æˆå‘˜å‡½æ•° -- å®šä¹‰
 
-    //ÔöÇ¿Í¼Ïñ //½øĞĞ¶şÖµ»¯²Ù×÷
+    //å¢å¼ºå›¾åƒ //è¿›è¡ŒäºŒå€¼åŒ–æ“ä½œ
     Mat enhancement(Mat src) {
         for (int i = 0; i < src.rows; i++) {
             for (int j = 0; j < src.cols; j++) {
@@ -27,60 +27,60 @@ namespace module3
         return src;
     }
 
-    //CannyËã·¨£¬CannyãĞÖµÊäÈë±ÈÀı1:3
+    //Cannyç®—æ³•ï¼ŒCannyé˜ˆå€¼è¾“å…¥æ¯”ä¾‹1:3
     Mat CannyThreshold(Mat& src)
     {
-        //¾ùÖµÂË²¨, Ê¹ÓÃ 3x3 ÄÚºË½µÔë£¬Æ½»¬Í¼Æ¬
+        //å‡å€¼æ»¤æ³¢, ä½¿ç”¨ 3x3 å†…æ ¸é™å™ªï¼Œå¹³æ»‘å›¾ç‰‡
         //blur(src_gray, detected_edges, Size(3, 3));
-        //¸ßË¹ÂË²¨
+        //é«˜æ–¯æ»¤æ³¢
         GaussianBlur(src_gray, detected_edges, Size(3, 3), 0, 0);
 
-        // ÔËĞĞCannyËã×Ó£¬Ä£ºıÍ¼Ïñ£¬Ñ°ÕÒ±ßÔµ£¬È»ºóÖµ±£´æÔÚdetected_edgesÖĞ
+        // è¿è¡ŒCannyç®—å­ï¼Œæ¨¡ç³Šå›¾åƒï¼Œå¯»æ‰¾è¾¹ç¼˜ï¼Œç„¶åå€¼ä¿å­˜åœ¨detected_edgesä¸­
         Canny(detected_edges, detected_edges, lowThreshold, highThreshold , kernel_size);
 
-        // Ê¹ÓÃ CannyËã×ÓÊä³ö±ßÔµ×÷ÎªÑÚÂëÏÔÊ¾Ô­Í¼Ïñ£¬Ìî³ädstÍ¼Ïñ£¨È«ºÚ£©
+        // ä½¿ç”¨ Cannyç®—å­è¾“å‡ºè¾¹ç¼˜ä½œä¸ºæ©ç æ˜¾ç¤ºåŸå›¾åƒï¼Œå¡«å……dstå›¾åƒï¼ˆå…¨é»‘ï¼‰
         dst = Scalar::all(0);
 
-        //Ê¹ÓÃº¯Êı copyTo ±êÊ¶±»¼ì²âµ½µÄ±ßÔµ²¿·Ö
+        //ä½¿ç”¨å‡½æ•° copyTo æ ‡è¯†è¢«æ£€æµ‹åˆ°çš„è¾¹ç¼˜éƒ¨åˆ†
         src.copyTo(dst, detected_edges);
         return dst;
     }
 
-    //¶ÔÍ¼Æ¬½øĞĞÅò»¯ºÍ¸¯Ê´´¦Àí£¬È¥³ı²»ĞèÒªµÄ±ßÔµºÍ±ÕºÏ¼äÏ¶
+    //å¯¹å›¾ç‰‡è¿›è¡Œè†¨åŒ–å’Œè…èš€å¤„ç†ï¼Œå»é™¤ä¸éœ€è¦çš„è¾¹ç¼˜å’Œé—­åˆé—´éš™
     void dilate_erode(Mat& src, Mat& dst)
     {
-        //·µ»ØÖ¸¶¨ĞÎ×´ºÍ³ß´çµÄÄÚºË¾ØÕó¡£Ñ¡Ôñ¾ØĞÎµÄ 3*3 ÄÚºË£¬ÃªµãÄ¬ÈÏÎªÖĞĞÄµã(-1,-1)
+        //è¿”å›æŒ‡å®šå½¢çŠ¶å’Œå°ºå¯¸çš„å†…æ ¸çŸ©é˜µã€‚é€‰æ‹©çŸ©å½¢çš„ 3*3 å†…æ ¸ï¼Œé”šç‚¹é»˜è®¤ä¸ºä¸­å¿ƒç‚¹(-1,-1)
         Mat element = getStructuringElement(MORPH_RECT, Size(3, 3), Point(-1, -1));
 
-        //Åò»¯´¦Àí
+        //è†¨åŒ–å¤„ç†
         dilate(src, dst, element);
 
-        //¸¯Ê´´¦Àí
+        //è…èš€å¤„ç†
         erode(dst, dst, element);
 
         for (int i = 0; i < 10; i++)
         {
-            //Åò»¯´¦Àí
+            //è†¨åŒ–å¤„ç†
             dilate(dst, dst, element);
 
-            //¸¯Ê´´¦Àí
+            //è…èš€å¤„ç†
             erode(dst, dst, element);
         }
     }
     
 
-    //È·¶¨Ä¿±êÍ¼Æ¬ÖĞµÄÄ¿±ê¶şÎ¬ÂëËùÔÚÇøÓò
+    //ç¡®å®šç›®æ ‡å›¾ç‰‡ä¸­çš„ç›®æ ‡äºŒç»´ç æ‰€åœ¨åŒºåŸŸ
     vector<Point> getRect(Mat& src, Mat& dst)
     {
-        double maxarea = 0;             //×î´óÂÖÀªÃæ»ı
-        int maxAreaIdx = 0;             //×î´óÃæ»ıÂÖÀªµÄÏÂ±ê
-        vector<vector<Point>>contours;  //ÂÖÀª¶ÔÏó
-        vector<Vec4i>hierarchy;         //Í¼ÏñµÄÍØÆË½á¹¹
+        double maxarea = 0;             //æœ€å¤§è½®å»“é¢ç§¯
+        int maxAreaIdx = 0;             //æœ€å¤§é¢ç§¯è½®å»“çš„ä¸‹æ ‡
+        vector<vector<Point>>contours;  //è½®å»“å¯¹è±¡
+        vector<Vec4i>hierarchy;         //å›¾åƒçš„æ‹“æ‰‘ç»“æ„
 
-        //Ñ°ÕÒÂÖÀª£¬·µ»ØÔÚcontoursÖĞ
+        //å¯»æ‰¾è½®å»“ï¼Œè¿”å›åœ¨contoursä¸­
         findContours(src, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-        //Ñ°ÕÒ×î´óÂÖÀª
+        //å¯»æ‰¾æœ€å¤§è½®å»“
         for (int i = 0; i < contours.size(); i++)
         {
             double tmparea = fabs(contourArea(contours[i]));
@@ -94,62 +94,62 @@ namespace module3
 
         Mat res_dst = Mat::zeros(src.size(), CV_8UC3);
 
-        //ÉèÖÃÂÖÀªµÄÑÕÉ«
+        //è®¾ç½®è½®å»“çš„é¢œè‰²
         RNG rng(0);
         Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 
-        //»æÖÆÂÖÀª
+        //ç»˜åˆ¶è½®å»“
         drawContours(res_dst, contours, maxAreaIdx, color, 2, 8, hierarchy, 0, Point(0, 0));
 
         //imshow("res", res_dst);
 
 
-        //ÓÃÓÚ´æ´¢ÄâºÏ¶à±ßĞÎµÄ¶¥µãĞÅÏ¢
+        //ç”¨äºå­˜å‚¨æ‹Ÿåˆå¤šè¾¹å½¢çš„é¡¶ç‚¹ä¿¡æ¯
         vector<Point>vertex_point;
-        //¶ÔÂÖÀª½øĞĞÄâºÏ£¬ÄâºÏ³É¶à±ßĞÎ
+        //å¯¹è½®å»“è¿›è¡Œæ‹Ÿåˆï¼Œæ‹Ÿåˆæˆå¤šè¾¹å½¢
         approxPolyDP(contours[maxAreaIdx], vertex_point, 50, 1);
 
-        //Êä³öÄâºÏ³ÉµÄ¶à±ßĞÎµÄ¶¥µãĞÅÏ¢
+        //è¾“å‡ºæ‹Ÿåˆæˆçš„å¤šè¾¹å½¢çš„é¡¶ç‚¹ä¿¡æ¯
         //cout << vertex_point << endl;
 
         return vertex_point;
     }
 
-    //Í¸ÊÓÓ³Éä£¬·µ»ØÓ³ÉäºóµÄÍ¼Æ¬
+    //é€è§†æ˜ å°„ï¼Œè¿”å›æ˜ å°„åçš„å›¾ç‰‡
     Mat get_Mappedim(Mat src, vector<Point> point)
     {
-        Point2f src_corners[4];          //Ô´¶¥µãĞÅÏ¢
-        Point2f dst_corners[4];          //Ä¿±ê¶¥µãĞÅÏ¢
+        Point2f src_corners[4];          //æºé¡¶ç‚¹ä¿¡æ¯
+        Point2f dst_corners[4];          //ç›®æ ‡é¡¶ç‚¹ä¿¡æ¯
 
-        //¸ñÊ½µÄ×ª»»
+        //æ ¼å¼çš„è½¬æ¢
         for (int i = 0; i < 4; i++)
         {
             src_corners[i].x = point[i].x;
             src_corners[i].y = point[i].y;
         }
 
-        //ÉèÖÃÄ¿±êÇøÓò
+        //è®¾ç½®ç›®æ ‡åŒºåŸŸ
         dst_corners[0] = Point(0, 0);
-        dst_corners[1] = Point(0, 815);
-        dst_corners[2] = Point(815, 815);
-        dst_corners[3] = Point(815, 0);
+        dst_corners[1] = Point(0, 820);
+        dst_corners[2] = Point(820, 820);
+        dst_corners[3] = Point(820, 0);
 
-        //»ñÈ¡Í¸ÊÓ¾ØÕó
+        //è·å–é€è§†çŸ©é˜µ
         Mat warpmatrix = getPerspectiveTransform(src_corners, dst_corners);
 
         Mat res;
 
-        //½øĞĞÍ¸ÊÓ
+        //è¿›è¡Œé€è§†
         warpPerspective(src, res, warpmatrix, res.size(), INTER_LANCZOS4);
 
-        //½ØÈ¡Ä¿±êÇøÓòµÄĞÅÏ¢
-        Rect res_rect(0, 0, 815, 815);
+        //æˆªå–ç›®æ ‡åŒºåŸŸçš„ä¿¡æ¯
+        Rect res_rect(0, 0, 820, 820);
         res = res(res_rect);
 
         return res;
     }
 
-    //module3µÄ½Ó¿Ú
+    //module3çš„æ¥å£
     vector<Mat> get_QRcode(vector<Mat>& src_ims)
     {
         vector<Mat> src;
@@ -158,39 +158,37 @@ namespace module3
             if (!src_im.data)
                 exit(-1);
 
-            //¶ÔÍ¼Æ¬´óĞ¡½øĞĞµ÷Õû
+            //å¯¹å›¾ç‰‡å¤§å°è¿›è¡Œè°ƒæ•´
             //resize(src_im, src_im, Size(815, 815), 0, 0, INTER_LANCZOS4);
 
-            //´´½¨Óësrc_imÍ¬ÀàĞÍµÄ´óĞ¡µÄ¾ØÕó£¨dst£©
+            //åˆ›å»ºä¸src_imåŒç±»å‹çš„å¤§å°çš„çŸ©é˜µï¼ˆdstï¼‰
             dst.create(src_im.size(), src_im.type());
 
-            //Ô­Í¼Ïñ×ª»»Îª»Ò¶ÈÍ¼Ïñ
+            //åŸå›¾åƒè½¬æ¢ä¸ºç°åº¦å›¾åƒ
             cvtColor(src_im, src_gray, CV_BGR2GRAY);
 
-            //»ñÈ¡±ßÔµ
+            //è·å–è¾¹ç¼˜
             dst = CannyThreshold(src_im);
 
-            //×ª»»Îª»Ò¶ÈÍ¼
+            //è½¬æ¢ä¸ºç°åº¦å›¾
             cvtColor(dst, dst, CV_BGR2GRAY);
 
-            //Åò»¯Óë¸¯Ê´
+            //è†¨åŒ–ä¸è…èš€
             dilate_erode(dst, dst);
 
-            //µÃµ½¶şÎ¬ÂëÇøÓò¶¥µã
+            //å¾—åˆ°äºŒç»´ç åŒºåŸŸé¡¶ç‚¹
             vector<Point>point = getRect(dst, dst);
 
-            //»ñÈ¡Í¸ÊÓºóµÄ¶şÎ¬Âë
+            //è·å–é€è§†åçš„äºŒç»´ç 
             src_im = get_Mappedim(src_im, point);
 
-
-            //¶Ô¶şÎ¬Âë´óĞ¡½øĞĞµ÷Õû
-            //resize(src_im, src_im, Size(815, 815), 0, 0, INTER_CUBIC);
+            //å°†æå–å‡ºæ¥çš„äºŒç»´ç äºŒå€¼åŒ–
             cvtColor(src_im, src_im, CV_BGR2GRAY);
             src_im = enhancement(src_im);
 
             idx++;
             cout << idx << ": " << endl << src_im.rows << " " << src_im.cols <<endl;
-            //½«½ØÈ¡µ½µÄ¶şÎ¬ÂëÌí¼Óµ½ÈİÆ÷srcÖĞ
+            //å°†æˆªå–åˆ°çš„äºŒç»´ç æ·»åŠ åˆ°å®¹å™¨srcä¸­
             src.push_back(src_im);
         }
 
