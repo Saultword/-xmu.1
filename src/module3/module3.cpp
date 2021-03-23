@@ -30,8 +30,6 @@ namespace module3
     //Canny算法，Canny阈值输入比例1:3
     Mat CannyThreshold(Mat& src)
     {
-        //均值滤波, 使用 3x3 内核降噪，平滑图片
-        //blur(src_gray, detected_edges, Size(3, 3));
         //高斯滤波
         GaussianBlur(src_gray, detected_edges, Size(3, 3), 0, 0);
 
