@@ -7,12 +7,16 @@ namespace encoding {
     //单张图片存储二进制位最大值
     const int MAX_SIZE = 100 * 100 - 8;
 
+    const int DATA_LENGTH = 100;
+
+    const int PIX_SIZE = 8;
+
     //读文件+返回string
     string getFile() {
 
         //打开文件
         string rt;
-        FILE* fp = fopen("data.in","r");
+        FILE* fp = fopen("data.in", "r");
         if (fp == nullptr) {
             cout << "Open file failed! " << endl;
             return rt;
@@ -59,30 +63,32 @@ namespace encoding {
 
     //将string内存的二进制信息存入Mat
     Mat string2Mat(string s, int num) {
-        Mat img(100, 100, CV_8UC1);
+        Mat img(DATA_LENGTH, DATA_LENGTH, CV_8UC1);
 
         //存入张数信息
-        for (int i = 0; i <= 7; i++) {
-            img.ptr<uchar>(0)[i] = (num % 2 == 1 ? 255 : 0);
+        for (int i = 7; i >= 0 ; i--) {
+            img.ptr<uchar>(0)[i] = (num % 2  ? 255 : 0);
+            num /= 2;
         }
 
         //存入数据
         int cnt = 0, len = s.size();
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 100; j++) {
+        for (int i = 0; i < DATA_LENGTH; i++) {
+            for (int j = 0; j < DATA_LENGTH; j++) {
                 if (i == 0 && j < 8)continue;
                 if (cnt >= len)img.ptr<uchar>(i)[j] = 0;
-                img.ptr<uchar>(i)[j] = (s[cnt++] == '0' ? 255 : 0);
+                img.ptr<uchar>(i)[j] = (s[cnt++] == '1' ? 255 : 0);
             }
         }
 
         //放大图片
         Mat bigger_img(800, 800, CV_8UC1);
 
+
         for (int i = 0; i < 800; i++) {
             for (int j = 0; j < 800; j++) {
-                int x = (i % 400) / 4;
-                int y = (j % 400) / 4;
+                int x = i / PIX_SIZE;
+                int y = j / PIX_SIZE;
                 bigger_img.ptr<uchar>(i)[j] = img.ptr<uchar>(x)[y];
             }
         }
