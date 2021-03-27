@@ -6,129 +6,36 @@
 #include <bitset>
 #include <stdio.h>
 #include <vector>
-#define charNumber 5000												//×Ö·û¸öÊı£¬×î¶à5000¸ö
+#define charNumber 5000												//å­—ç¬¦ä¸ªæ•°ï¼Œæœ€å¤š5000ä¸ª
 using namespace std;
 using namespace cv;
 
 namespace enAndde_code {
-	vector<string> pool;
-	double whiteGrayscale_percent(Mat img, int x, int y) {
-		int white = 0;
-		for (int i = x; i < x + 4; i++) {
-			for (int j = y; j < y + 4; j++) {
-				if (img.at<uchar>(i, j) > 128) white++;
-			}
-		}
-		return white / 16.0;
-	}
-	void print_01(Mat img, int x, int y) {
-		String s = "";
-		for (int i = x; i < x + 400; i += 4) {
-			for (int j = y; j < y + 400; j += 4) {
-				if (whiteGrayscale_percent(img, i, j) > 0.5) s += '0';
-				else s += '1';
-			}
-		}
-		pool.push_back(s);
-	}
-	bitset<8> toBinary(char i) {									//½«×Ö·û×ª»¯Îª¶ş½øÖÆ
-		bitset<8> bit;
-		bit = i;
-		return bit;
-	}
+    vector<string> pool;
+    double whiteGrayscale_percent(Mat img, int x, int y) {
+        int white = 0;
+        for (int i = x; i < x + 8; i++) {
+            for (int j = y; j < y + 8; j++) {
+                if (img.at<uchar>(i, j) > 128) white++;
+            }
+        }
+        return white / 64.0;
+    }
+    string print_01(Mat img, int x, int y) {
+        string s = "";
+        for (int i = x; i < x + 800; i += 8) {
+            for (int j = y; j < y + 800; j += 8) {
+                double rate = whiteGrayscale_percent(img, i, j);
+                if (rate > 0.7) s += '1';								//å·®é”™æ§åˆ¶
+                else if (rate < 0.3)s += '0';
+                else s += '-';										//æ ‡è®°ä¸ºæœªçŸ¥
+            }
+        }
+        return s;
+    }
 
-	char toDecimal(bitset<8> a) {									//½«¶ş½øÖÆ×ª»¯Îª×Ö·ûµÄAscIIÂë
-		char c = 0;
-		for (int i = 0; i < 8; i++) {
-			c += a[i] * pow(2, i);
-		}
-		return c;
-	}
-
-	void form(ofstream& ofile) {									//Ëæ»úÉú³Éº¬ÓĞcharNumber¸öAscIIÂëÎª
-		srand(time(NULL));											//48-122Ö®¼ä£¨¼üÅÌ¿ÉÊäÈë£©µÄ×Ö·ûµÄÎÄ¼ş
-		for (int i = 0; i < charNumber; i++) {
-			char c = 48 + rand() % 74;
-			ofile << c;
-		}
-	}
-
-	void encode(ifstream& ifile) {									//±àÂë²¿·Ö£¬¶ÔifileÖĞµÄĞÅÏ¢½øĞĞ±àÂë
-		bitset<8> toBinary(char i);
-		Mat	img = Mat::zeros(820, 820, CV_8UC1);
-		char c;
-		int colume = 0;
-		int row = 0;
-		Rect rec_up = Rect(5, 5, 810, 5);
-		Rect rec_down = Rect(5, 810, 810, 5);
-		Rect rec_left = Rect(5, 10, 5, 800);
-		Rect rec_right = Rect(810, 10, 5, 800);
-		rectangle(img, rec_up, Scalar(255), -1, 8, 0);
-		rectangle(img, rec_down, Scalar(255), -1, 8, 0);
-		rectangle(img, rec_left, Scalar(255), -1, 8, 0);
-		rectangle(img, rec_right, Scalar(255), -1, 8, 0);
-		while (ifile.peek() != EOF) {
-			ifile >> c;
-			bitset<8> ch = toBinary(c);
-			for (int i = 0; i < 8; i++) {
-				if (colume >= 200) {								//Ã¿Ò»ĞĞ´æ´¢200Î»ĞÅÏ¢£¬Ò»ĞĞ´æÍêĞÅÏ¢»»ÏÂÒ»ĞĞ´¢´æ
-					colume = 0;
-					row++;
-				}
-				if (ch[i] == 0) {
-					Rect rec1 = Rect(10 + 4 * colume, 10 + 4 * row, 4, 4);
-					rectangle(img, rec1, Scalar(255), -1, 8, 0);
-				}
-				colume++;
-			}
-		}
-		imshow("img", img);
-		waitKey();
-		imwrite("..\\¶şÎ¬Âë.jpg", img);
-	}
-
-	void decode() {									//½âÂë²¿·Ö,½«½âÂëºóµÄĞÅÏ¢´æ·ÅÔÚofileÖĞ  decode(ofstream& ofile_01)
-		Mat img = imread("..\\¶şÎ¬Âë.jpg", CV_8UC1);					//¶ÁÈ¡µ¥Í¨µÀÍ¼
-		int Grayscale;												//Grayscale»Ò¶È¡£
-		bitset<8> bitt;
-		print_01(img, 11, 11);										
-		print_01(img, 411, 11);
-		print_01(img, 11, 411);
-		print_01(img, 411, 411);
-//		infile >> bitt;
-//		cout << toDecimal(bitt);
-
-		/*
-		int count = 0;												//¼ÆÊı£¬Ã¿¶ÁÈ¡8Î»£¬Êä³öÒ»¸ö×Ö·û
-		for (int i = 12; i <= img.rows - 10; i += 4)					//ÒòÎªÃ¿4¡Á4¸öÏñËØ´æÒ»Î»ĞÅÏ¢£¬
-			for (int j = 12; j <= img.cols - 10; j += 4)				//Òò´ËÃ¿4ÁĞ£¬Ã¿4ĞĞ¶ÁÈ¡Ò»Î»¡£
-			{
-				Grayscale = img.at<uchar>(i, j);					//ÓÃatº¯Êı»ñÈ¡ÏñËØµÄ»Ò¶ÈÖµ
-				if (count < 8) {
-					if (Grayscale > 128) {
-						bitt[count] = 0;
-						count++;
-					}
-					else {
-						bitt[count] = 1;
-						count++;
-					}
-				}
-				else {
-					ofile << toDecimal(bitt);						//Ã¿¶ÁÈ¡8Î»£¬Êä³öÒ»¸ö×Ö·û
-					count = 0;
-					if (Grayscale > 128) {
-						bitt[count] = 0;
-						count++;
-					}
-					else {
-						bitt[count] = 1;
-						count++;
-					}
-
-				}
-			}
-		ofile << toDecimal(bitt);
-		*/
-	}
+    string decode(const Mat& img) {									//è§£ç éƒ¨åˆ†,å°†è§£ç åçš„ä¿¡æ¯å­˜æ”¾åœ¨ofileä¸­  decode(ofstream& ofile_01)
+        string rt = print_01(img, 10, 10);
+        return rt;
+    }
 }
