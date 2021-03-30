@@ -26,16 +26,16 @@ namespace enAndde_code {
         for (int i = x; i < x + 800; i += 8) {
             for (int j = y; j < y + 800; j += 8) {
                 double rate = whiteGrayscale_percent(img, i, j);
-                if (rate > 0.7) s += '1';								//差错控制
-                else if (rate < 0.3)s += '0';
-                else s += '-';										//标记为未知
+                if (rate > 0.6) s += '1';
+                else if (rate < 0.4)s += '0';
+                else s += '-';
             }
         }
         return s;
     }
 
     string decode(const Mat& img) {									//解码部分,将解码后的信息存放在ofile中  decode(ofstream& ofile_01)
-        string rt = print_01(img, 10, 10);
+        string rt = print_01(img, 16, 16);
         return rt;
     }
 }
