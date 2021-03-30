@@ -17,9 +17,10 @@ void solve(){
         if(ch1!=ch2)faliure++;
         right++;
     }
-    cout<<"right: "<<right<<endl;
-    cout<<"false: "<<faliure<<endl;
+    cout<<"success: "<<right<<endl;
+    cout<<"faliure: "<<faliure<<endl;
     cout<<"unknown: "<<ukn<<endl;
+	cout<<"Data Transfer Rate: "<<(double)right/(1024.0*1024.0*8.0)<<"Mbps"<<endl;
 }
 
 int main(){
