@@ -5,9 +5,9 @@ using namespace cv;
 namespace encoding {
 
     //单张图片存储二进制位最大值
-    const int MAX_SIZE = 100 * 100 - 8;
-
     const int DATA_LENGTH = 100;
+
+    const int MAX_SIZE = DATA_LENGTH * DATA_LENGTH - 8;
 
     const int PIX_SIZE = 8;
 
@@ -100,10 +100,11 @@ namespace encoding {
         for (int i = 0; i < 1000; i++) {
             for (int j = 0; j < 1000; j++) {
                 rt.ptr<uchar>(i)[j] = 255;
-                if (i <= 910 && i >= 90 && j <= 910 && j >= 90) {
+                if (i <= 916 && i >= 84 && j <= 916 && j >= 84) {
                     rt.ptr<uchar>(i)[j] = 0;
                 }
-                if (i <= 905 && i >= 95 && j <= 905 && j >= 95) {
+                /*现在黑框只有4pixel*/
+                if (i <= 912 && i >= 88 && j <= 912 && j >= 88) {
                     rt.ptr<uchar>(i)[j] = 255;
                 }
             }
