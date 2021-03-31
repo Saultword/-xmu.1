@@ -17,9 +17,18 @@ using namespace picvideo;
 		VideoWriter video(name2, CAP_ANY, frame_rate, Size(1000, 1000));
 		for (size_t i = 0; i < src_ims.size(); i++)
 		{
-			Mat image = src_ims[i].clone();
+			if(i==src_ims.size())
+			{
+				for(int j=0;j<frame_rate;j++)
+				{
+					Mat image = src_ims[i].clone();
+			                video << image;
+				}
+			}
+			else
+			{Mat image = src_ims[i].clone();
 			// 流操作符，把图片传入视频
-			video << image;
+			video << image;}
 		}
 	}
 	void video2pic(string path, vector<Mat>& src_ims)
