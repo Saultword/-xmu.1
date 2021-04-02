@@ -13,6 +13,7 @@ using namespace picvideo;
 		cin >> name2;
 		
 		cout << "请输入视频帧率:" << endl;
+		int frame_rate;
 		cin >> frame_rate;
 		VideoWriter video(name2, CAP_ANY, frame_rate, Size(1000, 1000));
 		for (size_t i = 0; i < src_ims.size(); i++)
