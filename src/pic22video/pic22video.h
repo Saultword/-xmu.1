@@ -2,7 +2,7 @@
 #include<opencv2/opencv.hpp>
 #include <opencv2\imgproc\types_c.h>
 #include<math.h>
-#include<vector> .
+#include<vector> 
 #include<strstream>
 #include<fstream>
 #include <windows.h>
@@ -11,14 +11,14 @@ using namespace cv;
 
 namespace picvideo
 {
-	void pic2video(vector<Mat>&src_ims);//½«Ôª×éÄÚ¸÷ÀàÍ¼Æ¬×ª»¯ÎªÊÓÆµ
+	void pic2video(vector<Mat>&src_ims);//å°†å…ƒç»„å†…å„ç±»å›¾ç‰‡è½¬åŒ–ä¸ºè§†é¢‘
 
 
 
-	void video2pic(string videopath, vector<Mat>& src_ims);//½«ÊÓÆµÖğÖ¡ÌáÈ¡½øÈëÔª×é³ÉÎªMatÀà¶ÔÏó
+	void video2pic(string videopath, vector<Mat>& src_ims);//å°†è§†é¢‘é€å¸§æå–è¿›å…¥å…ƒç»„æˆä¸ºMatç±»å¯¹è±¡
 
 
-	void videoshow(string path);//ÓÃÓÚ²¥·ÅÊÓÆµÄÚÈİ£¬²ÎÊıÎªµ±Ä¿Â¼ÏÂÎÄ¼şÃû×Ö
+	void videoshow(string path);//ç”¨äºæ’­æ”¾è§†é¢‘å†…å®¹ï¼Œå‚æ•°ä¸ºå½“ç›®å½•ä¸‹æ–‡ä»¶åå­—
 
 
 
