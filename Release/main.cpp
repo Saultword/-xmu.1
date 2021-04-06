@@ -3,19 +3,6 @@
 using namespace std;
 using namespace cv;
 
-namespace enhance {
-
-    //增强图像
-    Mat enhancement(Mat src) {
-        for (int i = 0; i < src.rows; i++) {
-            for (int j = 0; j < src.cols; j++) {
-                src.ptr<uchar>(i)[j] = (src.ptr<uchar>(i)[j] > 70 ? 255 : 0);
-            }
-        }
-        return src;
-    }
-}
-
 namespace module3
 {
     // 命名空间成员变量
@@ -328,9 +315,12 @@ namespace encoding {
     string getFile() {
 
         //打开文件
+        string path = "e1.bin";
         string rt;
+        cout << "请输入文件名称" << endl;
+        cin >> path;
 
-        fstream file("e5.bin", ios::binary | ios::in);
+        fstream file(path, ios::binary | ios::in);
         if (!file) {
             cout << "Open file failed!" << endl;
             return rt;
@@ -449,26 +439,17 @@ namespace encoding {
     }
 }
 
-namespace picvideo
-{
-    void pic2video(vector<Mat>& src_ims);//将元组内各类图片转化为视频
+namespace picvideo{
 
-
-
-    void video2pic(string videopath, vector<Mat>& src_ims);//将视频逐帧提取进入元组成为Mat类对象
-
-
-    void videoshow(string path);//用于播放视频内容，参数为当目录下文件名字
-
-
+    //将元组内各类图片转化为视频
     void pic2video(vector<Mat>& src_ims)
     {
-        string name2="E:\\test.avi";
+        string name2="test.avi";
         cout << "请输入编码后的视频文件名，例如“test.avi”:" << endl;
         cin >> name2;
 
-        cout << "请输入视频帧率:" << endl;
         int frame_rate = 15;
+        //cout << "请输入视频帧率:" << endl;
         //cin >> frame_rate;
 
         VideoWriter video(name2, VideoWriter::fourcc('M', 'P', '4', 'V'), frame_rate, Size(1000, 1000),false);
@@ -481,6 +462,7 @@ namespace picvideo
         
     }
 
+    //将视频逐帧提取进入元组成为Mat类对象
     void video2pic(string path, vector<Mat>& src_ims)
     {
         VideoCapture capture(path);
@@ -495,6 +477,7 @@ namespace picvideo
         }
     }
 
+    //用于播放视频内容，参数为当目录下文件名字
     void videoshow(string path)
     {
         VideoCapture capture(path);
@@ -580,7 +563,9 @@ void test1() {
 void test2() {
 
     //手机拍摄视频的地址
-    const string path = "E:\\test5.mp4";
+    cout << "请输入视频名称" << endl;
+    string path = "E:\\test5.mp4";
+    cin >> path;
 
     vector<Mat> img_set;
 
