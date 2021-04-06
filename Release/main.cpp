@@ -464,8 +464,8 @@ namespace picvideo
     void pic2video(vector<Mat>& src_ims)
     {
         string name2="E:\\test.avi";
-        cout << "请输入编码后的视频文件名，例如“test.mp4”:" << endl;
-        //cin >> name2;
+        cout << "请输入编码后的视频文件名，例如“test.avi”:" << endl;
+        cin >> name2;
 
         cout << "请输入视频帧率:" << endl;
         int frame_rate = 15;
@@ -478,10 +478,6 @@ namespace picvideo
             // 流操作符，把图片传入视频
             video << image;
         }
-
-        Mat img = src_ims[src_ims.size() - 1];
-        int t = 30;
-        while (t--)video << img;
         
     }
 
@@ -641,7 +637,8 @@ void test2() {
 }
 
 
-int main(){
+int main()
+{
     /******test1从二进制文件生成视频******/
     test1();
 
