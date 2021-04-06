@@ -1,8 +1,8 @@
 #pragma once
-#include<iostream>
-#include<opencv2/opencv.hpp>
-#include <opencv2\imgproc\types_c.h>
-#include<math.h>
-#include<vector> .
-#include<strstream>
-#include<fstream>
+#include"encoding.h"
+#include"picvideo.h"
+#include"decoding.h"
+#include"module3.h"
+
+using namespace std;
+using namespace cv;
